@@ -874,18 +874,19 @@ const ROUTES: Record<string, (c: Ctx) => Promise<unknown>> = {
     const secret = Deno.env.get("CRON_SECRET") || cfg?.value?.secret;
     if (!secret || (c.req.headers.get("x-cron-secret") || "") !== secret) throw new HttpError(401, "no");
     const today = todayET();
-    const out: any = {};
+    const hourET = Number(new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", hourCycle: "h23" }).format(new Date()));
+    const out: any = { hourET };
     // 1. expire stale holds (queries already ignore them; this tidies status)
     const { data: expired } = await c.sb.from("bookings").update({ status: "expired", block_hours: 0 }).eq("status", "pending_payment").lt("hold_until", new Date(Date.now() - 10 * 60000).toISOString()).eq("paid_cents", 0).select("id");
     out.expired = expired?.length || 0;
     // 2. reminders for tomorrow
-    if (c.S.business.notifications.customerReminders) {
+    if (c.S.business.notifications.customerReminders && hourET >= 9 && hourET <= 19) {
       const { data: tm } = await c.sb.from("bookings").select("*, customers(name,email)").eq("service_date", addDays(today, 1)).eq("status", "confirmed").is("reminder_sent_at", null);
       for (const b of tm || []) { await notify(c.sb, c.S, b.customers.email, "reminder", { booking: b, name: b.customers.name, when: "tomorrow" }); await c.sb.from("bookings").update({ reminder_sent_at: new Date().toISOString() }).eq("id", b.id); }
       out.reminders = tm?.length || 0;
     }
     // 3. weather flags (never fatal)
-    if (c.S.business.notifications.weatherAlerts) {
+    if (c.S.business.notifications.weatherAlerts && (hourET === 6 || c.body.force)) {
       try { out.weather = await weatherCheck(c, true); } catch (e) { await logError(c.sb, "cron/weather", e); }
     }
     // 4. retry failed/queued emails from the last day once
