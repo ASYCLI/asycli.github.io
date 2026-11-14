@@ -52,7 +52,7 @@ jobs:
         with: { version: latest }
       - name: Deploy Edge Function
         if: env.SUPABASE_ACCESS_TOKEN != ''
-        run: supabase functions deploy api --project-ref tmsahdvlctabrvqqdemn --no-verify-jwt --use-api
+        run: supabase functions deploy api --remote=tmsahdvlctabrvqqdemn --no-verify-jwt --use-api --yes
       - name: Skipped
         if: env.SUPABASE_ACCESS_TOKEN == ''
         run: echo "Add the SUPABASE_ACCESS_TOKEN repository secret to enable backend deploys."
