@@ -42,7 +42,7 @@ const FIELDS = {
       <p class="fine" style="margin-top:6px">Not sure? Pick the closest and upload a photo later — we'll confirm on the first visit.</p></div>` },
     radio("condition", "Grass condition", [["maintained", "Regularly cut", "Mowed in the last 2 weeks"], ["overgrown", "Overgrown", "3–5 weeks since last cut"], ["very_overgrown", "Very overgrown", "Long, thick or gone to seed"]], "maintained"),
     radio("obstacles", "Obstacles (trees, beds, play sets, fences)", [["few", "Few"], ["some", "Some"], ["many", "Many"]], "few"),
-    radio("trimming", "String trimming needed", [["light", "Light"], ["standard", "Standard edges & fences"], ["heavy", "Heavy / lots of borders"]], "standard"),
+    radio("trimming", "String trimming needed", [["standard", "Standard", "Edges, fences & beds — included"], ["heavy", "Heavy", "Lots of borders or overgrown edges"]], "standard"),
   ],
   winter: [
     radio("tier", "Driveway size", [["small", "Small", "1–2 cars, single width"], ["medium", "Medium", "3–4 cars or double width"], ["large", "Large", "Long, or 5+ cars"]], "small"),

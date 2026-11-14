@@ -160,7 +160,7 @@ def cta_band(title="Ready for a cleaner property?", text="Get an instant estimat
 def svc_cards():
     photo = {"spring": "spring", "summer": "summer", "fall": "fall", "winter": "winter"}
     unit = {"spring": "cleanup from", "summer": "per mow from", "fall": "cleanup from", "winter": "per visit from"}
-    default = {"spring": 225, "summer": 85, "fall": 225, "winter": 85}
+    default = {"spring": 225, "summer": 80, "fall": 225, "winter": 75}
     out = []
     for k, n, u, d in SERVICES:
         out.append(f"""<a class="card svc-card reveal" href="{u}"><span class="tag"><i class="{SEASON_COLOR[k]}"></i>{k.title()}</span>
@@ -189,8 +189,8 @@ pages["/"] = page("/", f"{NAME} | Leaf Cleanup, Snow Removal & Mowing in Islip, 
 </div></div>
 <aside class="hero-card" aria-label="Pricing at a glance"><h3>Transparent starting prices</h3><ul>
 <li><span>Fall cleanup</span><b>from <span data-from="fall">$225</span></b></li>
-<li><span>Snow clearing / visit</span><b>from <span data-from="winter">$85</span></b></li>
-<li><span>Mow + trim</span><b>from <span data-from="summer">$85</span></b></li>
+<li><span>Snow clearing / visit</span><b>from <span data-from="winter">$75</span></b></li>
+<li><span>Mow + trim</span><b>from <span data-from="summer">$80</span></b></li>
 <li><span>Spring cleanup</span><b>from <span data-from="spring">$225</span></b></li></ul>
 <p class="fine" style="margin:8px 0 0">Plus NY sales tax. Exact price depends on your property.</p></aside>
 </section>
@@ -234,9 +234,9 @@ pages["/"] = page("/", f"{NAME} | Leaf Cleanup, Snow Removal & Mowing in Islip, 
 <a class="btn" href="/plans/">View Seasonal Plans</a></div>
 <div class="card reveal"><h3>Plans start at</h3><table class="price-table"><tbody>
 <tr><td>Spring Renewal Membership</td><td class="num"><span data-plan="spring">$189</span>/mo</td></tr>
-<tr><td>Summer Lawn Maintenance</td><td class="num"><span data-plan="summer">$159</span>/mo</td></tr>
-<tr><td>Fall Cleanup Membership</td><td class="num"><span data-plan="fall">$229</span>/mo</td></tr>
-<tr><td>Winter Protection Membership</td><td class="num"><span data-plan="winter">$159</span>/mo</td></tr>
+<tr><td>Summer Lawn Maintenance</td><td class="num"><span data-plan="summer">$119</span>/mo</td></tr>
+<tr><td>Fall Cleanup Membership</td><td class="num"><span data-plan="fall">$199</span>/mo</td></tr>
+<tr><td>Winter Protection Membership</td><td class="num"><span data-plan="winter">$129</span>/mo</td></tr>
 </tbody></table><p class="fine">Small-property prices shown, plus sales tax.</p></div>
 </div></section>
 
@@ -309,9 +309,9 @@ pages["/winter-snow-removal/"] = service_page("winter", "/winter-snow-removal/",
   ["Residential driveway snow clearing", "Walkway and front-step clearing", "Snowblower clearing and hand shoveling", "Snow accumulation cleanup", "Optional salting and de-icing"],
   ["Commercial lots or truck-mounted plowing", "Roof snow removal", "Unlimited visits for a flat monthly price", "Guaranteed arrival times during active storms — we work through member properties in route order"],
   """<table class="price-table"><thead><tr><th>Driveway</th><th>Per visit from</th></tr></thead><tbody>
-<tr><td>Small (1–2 cars)</td><td class="num"><span data-snow="small">$85</span></td></tr>
-<tr><td>Medium (3–4 cars / double)</td><td class="num"><span data-snow="medium">$115</span></td></tr>
-<tr><td>Large (long or 5+ cars)</td><td class="num"><span data-snow="large">$165</span></td></tr>
+<tr><td>Small (1–2 cars)</td><td class="num"><span data-snow="small">$75</span></td></tr>
+<tr><td>Medium (3–4 cars / double)</td><td class="num"><span data-snow="medium">$100</span></td></tr>
+<tr><td>Large (long or 5+ cars)</td><td class="num"><span data-snow="large">$135</span></td></tr>
 <tr><td>Salting / de-icing</td><td class="num">+<span data-salt="small">$25</span>–<span data-salt="large">$40</span></td></tr></tbody></table>
 <p class="fine">Deeper snow (6"+), long walkways and heavy ice cost more. Plus NY sales tax.</p>""",
   [("What's the snowfall trigger?", "Membership visits are triggered by <span data-trigger>2</span> inches or more of snowfall, as reported by the National Weather Service for the Islip area. You can always request a visit for lighter snow at the regular per-visit price."),
@@ -345,12 +345,12 @@ pages["/summer-lawn-maintenance/"] = service_page("summer", "/summer-lawn-mainte
   ["Lawn mowing", "String trimming / weed whacking along edges, fences, beds and obstacles", "Blow-off of clippings from hard surfaces"],
   ["Fertilization", "Pesticides or weed treatments", "Aeration or seeding", "Landscaping, planting or mulching", "Irrigation", "Any other lawn treatment"],
   """<table class="price-table"><thead><tr><th>Mowable lawn</th><th>Mow + trim from</th></tr></thead><tbody>
-<tr><td>Up to 4,000 sq ft</td><td class="num"><span data-band="0">$85</span></td></tr>
-<tr><td>4,000 – 8,000 sq ft</td><td class="num"><span data-band="1">$105</span></td></tr>
-<tr><td>8,000 – 14,000 sq ft</td><td class="num"><span data-band="2">$140</span></td></tr>
-<tr><td>14,000 – 22,000 sq ft</td><td class="num"><span data-band="3">$185</span></td></tr>
+<tr><td>Up to 4,000 sq ft</td><td class="num"><span data-band="0">$80</span></td></tr>
+<tr><td>4,000 – 8,000 sq ft</td><td class="num"><span data-band="1">$95</span></td></tr>
+<tr><td>8,000 – 14,000 sq ft</td><td class="num"><span data-band="2">$125</span></td></tr>
+<tr><td>14,000 – 22,000 sq ft</td><td class="num"><span data-band="3">$165</span></td></tr>
 <tr><td>Larger</td><td class="num">Custom quote</td></tr></tbody></table>
-<p class="fine">Overgrown first cuts, many obstacles or heavy trimming cost more. Monthly plans (2 visits) cost less per visit than booking separately. Plus NY sales tax.</p>""",
+<p class="fine">Price includes standard string trimming. Overgrown first cuts, many obstacles or heavy trimming cost more. Monthly plans (2 visits) cost less per visit than booking separately. Plus NY sales tax.</p>""",
   [("How do I know my lawn size?", "Our estimator walks you through it, and you can upload a photo. A typical quarter-acre lot often has around 5,000–8,000 sq ft of mowable lawn once you subtract the house, driveway and beds. We'll confirm on the first visit."),
    ("Do you fertilize or treat weeds?", "No. We only mow and string-trim."),
    ("How often do members get mowed?", "The Summer Lawn Maintenance Membership includes two scheduled mowing and trimming visits per month.")],

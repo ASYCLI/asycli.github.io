@@ -36,7 +36,7 @@ export const DEFAULT_PRICING = {
     access: { easy: 1, moderate: 1.08, difficult: 1.18 },
     haulAway: { small: 40, medium: 70, large: 110 }, // × leaf volume factor
     extras: { hardscape_blowoff: 20, beds_and_corners: 35 },
-    crewHours: { small: 1.5, medium: 2.5, large: 4 },
+    crewHours: { small: 1.4, medium: 2.3, large: 3.7 },
     bagsPerHour: 8,
   },
   spring: {
@@ -52,19 +52,19 @@ export const DEFAULT_PRICING = {
   summer: {
     // mowable lawn area bands in sq ft → single-visit price (mow + trim)
     areaBands: [
-      [4000, 85],
-      [8000, 105],
-      [14000, 140],
-      [22000, 185],
+      [4000, 80],
+      [8000, 95],
+      [14000, 125],
+      [22000, 165],
     ],
     reviewOverSqft: 22000,
     condition: { maintained: 1, overgrown: 1.35, very_overgrown: 1.75 },
     obstacles: { few: 1, some: 1.1, many: 1.2 },
-    trimming: { light: 0, standard: 10, heavy: 25 },
-    crewHoursPerBand: [0.5, 0.65, 0.9, 1.2],
+    trimming: { light: 0, standard: 0, heavy: 15 }, // standard edging/trimming is included in the band price
+    crewHoursPerBand: [0.45, 0.6, 0.85, 1.15],
   },
   winter: {
-    driveway: { small: 85, medium: 115, large: 165 },
+    driveway: { small: 75, medium: 100, large: 135 },
     drivewayLabels: {
       small: "Small (1–2 cars, single width)",
       medium: "Medium (3–4 cars or double width)",
@@ -74,15 +74,15 @@ export const DEFAULT_PRICING = {
     depth: { "2-6": 1, "6-12": 1.35, "12+": 1.75 },
     ice: { none: 0, some: 10, heavy: 25 },
     salting: { small: 25, medium: 30, large: 40 },
-    crewHours: { small: 0.5, medium: 0.7, large: 1.0 },
+    crewHours: { small: 0.45, medium: 0.6, large: 0.85 },
     saltBagsPerVisit: { small: 1, medium: 1.5, large: 2 },
   },
   memberships: {
     // monthly price (before tax), 2 scheduled visits per month (winter: see winterTerms)
     spring: { small: 189, medium: 259, large: 359 },
-    summer: { small: 159, medium: 219, large: 299 },
-    fall: { small: 229, medium: 329, large: 479 },
-    winter: { small: 159, medium: 209, large: 299 },
+    summer: { small: 119, medium: 159, large: 209 },
+    fall: { small: 199, medium: 289, large: 419 },
+    winter: { small: 129, medium: 169, large: 229 },
     visitsPerMonth: 2,
   },
   winterTerms: {
@@ -107,10 +107,11 @@ export const DEFAULT_PRICING = {
 
 export const DEFAULT_COSTS = {
   laborPerWorkerHour: 22, // DRAFT — owner must confirm
-  crewSize: { fall: 3, spring: 3, summer: 3, winter: 3 },
+  crewSize: { fall: 3, spring: 3, summer: 2, winter: 2 }, // mowing & snow: one mows/blows, one trims/shovels
   fuelPerJob: 8,
   fuelPerDriveMinute: 0.25, // round trip handled by ×2
-  paidTravelMinutesPerJob: 15, // crew is paid while driving between jobs
+  paidTravelMinutesPerJob: 12, // crew is paid while driving between jobs
+  memberPaidTravelMinutes: 6, // member visits are routed back-to-back in the same area
   equipmentPerCrewHour: 8,
   bagCost: 0.6,
   saltBagCost: 12,
@@ -328,7 +329,7 @@ export function membership(service, tier, P = DEFAULT_PRICING, C = DEFAULT_COSTS
   const visits = service === "winter" ? P.winterTerms.includedVisitsPerMonth : P.memberships.visitsPerMonth;
   // typical maintenance visit for members is lighter than a first/one-time job
   const perVisit = typicalVisit(service, tier, P);
-  const cost = costOf({ ...perVisit, service, total: price / visits }, C);
+  const cost = costOf({ ...perVisit, service, total: price / visits }, { ...C, paidTravelMinutesPerJob: C.memberPaidTravelMinutes ?? C.paidTravelMinutesPerJob });
   const monthlyCost = cost.totalCost * visits;
   return {
     service, tier, monthly: price, visitsPerMonth: visits,
@@ -340,11 +341,11 @@ export function membership(service, tier, P = DEFAULT_PRICING, C = DEFAULT_COSTS
 function typicalVisit(service, tier, P) {
   if (service === "summer") {
     const idx = { small: 0, medium: 1, large: 2 }[tier];
-    return { crewHours: P.summer.crewHoursPerBand[idx], materials: 0, disposal: 0, driveMinutes: 20 };
+    return { crewHours: P.summer.crewHoursPerBand[idx], materials: 0, disposal: 0, driveMinutes: 10 };
   }
-  if (service === "winter") return { crewHours: P.winter.crewHours[tier], materials: 0, disposal: 0, driveMinutes: 20 };
+  if (service === "winter") return { crewHours: P.winter.crewHours[tier], materials: 0, disposal: 0, driveMinutes: 10 };
   // maintenance visits in a membership are lighter: ~45% of a full cleanup
-  return { crewHours: P[service].crewHours[tier] * 0.45, materials: 3, disposal: 0, driveMinutes: 20 };
+  return { crewHours: P[service].crewHours[tier] * 0.45, materials: 3, disposal: 0, driveMinutes: 10 };
 }
 
 function manual(reason, inputs, P) {
