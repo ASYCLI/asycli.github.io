@@ -389,3 +389,5 @@ nav.main a, .nav-drop > button { padding: 8px 9px; font-size: .93rem; }
 @media (max-width: 1060px) { header.site.open nav.main a[href="/faq/"], header.site.open nav.main a[href="/about/"] { display: block; } }
 @media (max-width: 420px) { .topbar .wrap { font-size: .8rem; } .topbar .season-pill span[data-season-label] { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } }
 .hero .bg img:not([src]), .hero .bg img[src=""] { display: none; }
+
+[hidden] { display: none !important; }
