@@ -956,7 +956,7 @@ async function stripeSetup(c: Ctx) {
     const found = existing.data.find((p: any) => p.metadata?.asycli_membership === s);
     if (found) { products[s] = found.id; reused.push(found.name); continue; }
     const p = await stripe("POST", "/products", {
-      name: `${serviceName(s)} Membership`,
+      name: s === "winter" ? "Winter Protection Membership" : `${serviceName(s)} Membership`,
       description: s === "winter" ? "Monthly winter snow & ice membership: priority service with included visits after qualifying snowfall. Ends at season end." : "Two scheduled visits per month during the season. Ends automatically at season end.",
       metadata: { asycli_membership: s }, tax_code: "txcd_20030000",
     }, `asycli-product-${s}`);
